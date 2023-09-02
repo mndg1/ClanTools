@@ -6,7 +6,7 @@ namespace Application.Test;
 public class ApplicationManagerTests
 {
 
-    [Theory]
+	[Theory]
 	[InlineData(true)]
 	[InlineData(false)]
 	public async Task StartApplicationsAsync_ApplicationShouldStartBasedOnSetting(bool shouldStart)
