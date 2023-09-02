@@ -17,6 +17,7 @@ public abstract class RuneScapeApiService
 		if (!response.IsSuccessStatusCode)
 		{
 			// TODO: Mark for retry?
+			return string.Empty;
 		}
 
 		return await response.Content.ReadAsStringAsync();

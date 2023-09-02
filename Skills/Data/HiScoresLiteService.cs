@@ -17,10 +17,16 @@ public class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 
 	public async Task<SkillSet> GetSkillSetAsync(string userName)
 	{
-		var skillSet = new SkillSet();
+		var skillSet = new SkillSet(_skillsConfig.SkillNames);
 
-		var apiResult = await PerformRequest(GetUrl(userName));
-		var skillsData = apiResult.Split('\n');
+		var result = await PerformRequest(GetUrl(userName));
+
+		if (string.IsNullOrWhiteSpace(result))
+		{
+			return skillSet;
+		}
+
+		var skillsData = result.Split('\n');
 
 		for (int i = 0; i < _skillsConfig.SkillNames.Count; i++)
 		{
@@ -30,7 +36,8 @@ public class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 			int.TryParse(skillData[1], out var level);
 			int.TryParse(skillData[2], out var experience);
 
-			skillSet.Skills[skillName] = new Skill(skillName, level, experience);
+			var skill = new Skill(skillName, level, experience);
+			skillSet.Skills[skill.Name] = skill;
 		}
 
 		return skillSet;
