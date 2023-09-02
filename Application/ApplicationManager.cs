@@ -4,11 +4,11 @@ namespace Application;
 
 public class ApplicationManager : IApplicationManager
 {
-	private IEnumerable<IApplication> _applications;
-	private ApplicationsConfiguration _applicationsConfig;
+	private readonly IEnumerable<IApplication> _applications;
+	private readonly ApplicationsConfiguration _applicationsConfig;
 
 	public ApplicationManager(
-		IEnumerable<IApplication> applications, 
+		IEnumerable<IApplication> applications,
 		IOptions<ApplicationsConfiguration> applicationsConfig)
 	{
 		_applications = applications;
