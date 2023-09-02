@@ -13,10 +13,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj" />
+    <ProjectReference Include="..\Skills\Skills.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="applications.json">
+    <None Update="configuration.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
