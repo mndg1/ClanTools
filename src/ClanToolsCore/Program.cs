@@ -4,9 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Application;
 using Skills;
 
-var configuration = new ConfigurationBuilder()
-	.AddJsonFile("configuration.json")
-	.Build();
+var configuration = new ConfigurationBuilder().Build();
 
 var builder = Host.CreateApplicationBuilder();
 
