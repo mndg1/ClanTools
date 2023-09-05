@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClanToolsCore", "src\ClanTo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{92C6B929-C3B0-409F-981B-31122EAAD3E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{8450A93E-9FBE-4A32-B491-3B56487F4710}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Applications\Application\Application.csproj", "{8450A93E-9FBE-4A32-B491-3B56487F4710}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C9850C5-7043-4D9D-A8DD-1F7FB215D635}"
 EndProject

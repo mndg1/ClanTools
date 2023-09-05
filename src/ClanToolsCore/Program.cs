@@ -12,3 +12,5 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddApplicationModule(configuration);
 builder.Services.AddSkillsModule(configuration);
+
+var host = builder.Build();
