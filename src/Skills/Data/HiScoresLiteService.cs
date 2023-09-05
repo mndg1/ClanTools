@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Skills.Models;
 using System.Text.Json;
 
@@ -11,20 +12,22 @@ internal class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 
 	public HiScoresLiteService(
 		IHttpClientFactory httpClientFactory,
-		IOptions<SkillsConfiguration> skillsConfig)
-		: base(httpClientFactory, skillsConfig)
+		IOptions<SkillsConfiguration> skillsConfig,
+		ILogger<HiScoresLiteService> logger)
+		: base(httpClientFactory, skillsConfig, logger)
 	{
 	}
 
 	public async Task<SkillSet> GetSkillSetAsync(string userName)
 	{
+		_logger.LogInformation("Getting skill data for {userName}", userName);
 		var url = GetUrl(userName);
 		var apiResult = await PerformRequest(url);
 
 		if (!apiResult.Successful)
 		{
+			_logger.LogError("Initial API call for {userName} failed.", userName);
 			apiResult = await Retry(url);
-			// TODO: Log
 		}
 
 		return ConstructSkillSet(apiResult);
@@ -36,6 +39,7 @@ internal class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 
 		if (!apiResult.Successful)
 		{
+			_logger.LogWarning("Could not create skill set with results from an unsuccessful API call.");
 			return skillSet;
 		}
 
@@ -73,15 +77,12 @@ internal class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 
 		for (int i = 0; i < skillsAmount; i++)
 		{
-			var skillData = JsonSerializer.Deserialize<int[]>(result[i]);
+			var skillData = result[i].Split(",");
 
-			if (skillData == null)
-			{
-				skillData = new int[3];
-				// TODO: Log
-			}
+			int.TryParse(skillData[LEVEL_INDEX], out var level);
+			int.TryParse(skillData[EXPERIENCE_INDEX], out var experience);
 
-			data.Add(skillData);
+			data.Add(new int[] { 0, level, experience });
 		}
 
 		return data;

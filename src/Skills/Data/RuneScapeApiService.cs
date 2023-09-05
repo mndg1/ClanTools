@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Skills.Models;
 
 namespace Skills.Data;
@@ -7,11 +8,16 @@ internal abstract class RuneScapeApiService
 {
 	private readonly IHttpClientFactory _httpClientFactory;
 	protected readonly SkillsConfiguration _skillsConfig;
+	protected readonly ILogger<RuneScapeApiService> _logger;
 
-	protected RuneScapeApiService(IHttpClientFactory httpClientFactory, IOptions<SkillsConfiguration> skillsConfig)
+	protected RuneScapeApiService(
+		IHttpClientFactory httpClientFactory,
+		IOptions<SkillsConfiguration> skillsConfig,
+		ILogger<RuneScapeApiService> logger)
 	{
 		_httpClientFactory = httpClientFactory;
 		_skillsConfig = skillsConfig.Value;
+		_logger = logger;
 	}
 
 	internal async Task<ApiResult> PerformRequest(string url)
@@ -27,6 +33,8 @@ internal abstract class RuneScapeApiService
 
 	protected async Task<ApiResult> Retry(string url)
 	{
+		_logger.LogInformation($"Retrying API call.");
+
 		int retryCount = 0;
 		var apiResult = new ApiResult(false, string.Empty);
 		var retryInterval = _skillsConfig.ApiRetryInterval;
@@ -40,6 +48,7 @@ internal abstract class RuneScapeApiService
 
 			if (apiResult.Successful)
 			{
+				_logger.LogInformation("Retrying was successful.");
 				break;
 			}
 

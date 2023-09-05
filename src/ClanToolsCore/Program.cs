@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Serilog;
 using Application;
 using Skills;
 
@@ -9,6 +11,17 @@ var configuration = new ConfigurationBuilder()
 	.Build();
 
 var builder = Host.CreateApplicationBuilder();
+
+builder.Services.AddLogging(loggerBuilder =>
+{
+	loggerBuilder.ClearProviders();
+
+	var logger = new LoggerConfiguration()
+		.WriteTo.Console()
+		.CreateLogger();
+
+	loggerBuilder.AddSerilog(logger);
+});
 
 builder.Services.AddHttpClient();
 
