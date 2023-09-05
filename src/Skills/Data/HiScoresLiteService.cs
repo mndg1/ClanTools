@@ -1,46 +1,29 @@
 ﻿using Microsoft.Extensions.Options;
 using Skills.Models;
+using System.Text.Json;
 
 namespace Skills.Data;
 
-public class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
+internal class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 {
-	private readonly SkillsConfiguration _skillsConfig;
-
 	public HiScoresLiteService(
 		IHttpClientFactory httpClientFactory,
 		IOptions<SkillsConfiguration> skillsConfig)
-		: base(httpClientFactory)
+		: base(httpClientFactory, skillsConfig)
 	{
-		_skillsConfig = skillsConfig.Value;
 	}
 
 	public async Task<SkillSet> GetSkillSetAsync(string userName)
 	{
-		var skillSet = new SkillSet(_skillsConfig.SkillNames);
+		var url = GetUrl(userName);
+		var apiResult = await PerformRequest<List<int[]>>(url);
 
-		var result = await PerformRequest(GetUrl(userName));
-
-		if (string.IsNullOrWhiteSpace(result))
+		if (!apiResult.Successful)
 		{
-			return skillSet;
+			apiResult = await Retry<List<int[]>>(url);
 		}
 
-		var skillsData = result.Split('\n');
-
-		for (int i = 0; i < _skillsConfig.SkillNames.Count; i++)
-		{
-			var skillName = _skillsConfig.SkillNames[i];
-			var skillData = skillsData[i].Split(',');
-
-			int.TryParse(skillData[1], out var level);
-			int.TryParse(skillData[2], out var experience);
-
-			var skill = new Skill(skillName, level, experience);
-			skillSet.Skills[skill.Name] = skill;
-		}
-
-		return skillSet;
+		return ConstructSkillSet(apiResult.Result);
 	}
 
 	public async Task<IEnumerable<SkillSet>> GetSkillSetsAsync(IEnumerable<string> userNames)
@@ -52,8 +35,34 @@ public class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 		return results;
 	}
 
+	private SkillSet ConstructSkillSet(IList<int[]> data)
+	{
+		var skillSet = new SkillSet(_skillsConfig.SkillNames);
+
+		if (!IsValidData(data))
+		{
+			return skillSet;
+		}
+
+		for (int i = 0; i < _skillsConfig.SkillNames.Count; i++)
+		{
+			var skillName = _skillsConfig.SkillNames[i];
+			var level = data[i][1];
+			var experience = data[i][2];
+
+			skillSet.Skills[skillName] = new Skill(skillName, level, experience);
+		}
+
+		return skillSet;
+	}
+
 	private static string GetUrl(string userName)
 	{
 		return $"https://secure.runescape.com/m=hiscore/index_lite.ws?player={userName}";
+	}
+
+	private bool IsValidData(IList<int[]> data)
+	{
+		return data.Count >= _skillsConfig.SkillNames.Count;
 	}
 }

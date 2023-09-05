@@ -3,7 +3,7 @@ using Skills.Models;
 
 namespace Skills;
 
-public class SkillService : ISkillService
+internal class SkillService : ISkillService
 {
 	private readonly ISkillDataRetriever _skillDataRetriever;
 

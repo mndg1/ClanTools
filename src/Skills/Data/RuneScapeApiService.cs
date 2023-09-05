@@ -1,25 +1,48 @@
-﻿namespace Skills.Data;
+﻿using Microsoft.Extensions.Options;
+using Skills.Models;
+using System.Text.Json;
 
-public abstract class RuneScapeApiService
+namespace Skills.Data;
+
+internal abstract class RuneScapeApiService
 {
 	private readonly IHttpClientFactory _httpClientFactory;
+	protected readonly SkillsConfiguration _skillsConfig;
 
-	protected RuneScapeApiService(IHttpClientFactory httpClientFactory)
+	protected RuneScapeApiService(IHttpClientFactory httpClientFactory, IOptions<SkillsConfiguration> skillsConfig)
 	{
 		_httpClientFactory = httpClientFactory;
+		_skillsConfig = skillsConfig.Value;
 	}
 
-	internal async Task<string> PerformRequest(string url)
+	internal async Task<ApiResult<T>> PerformRequest<T>(string url)
 	{
 		using var httpClient = _httpClientFactory.CreateClient();
 		using var response = await httpClient.GetAsync(url);
 
-		if (!response.IsSuccessStatusCode)
+		var result = await JsonSerializer.DeserializeAsync<T>(response.Content.ReadAsStream());
+		var apiResult = new ApiResult<T>(response.IsSuccessStatusCode, result!);
+
+		return apiResult;
+	}
+
+	protected async Task<ApiResult<T>> Retry<T>(string url)
+	{
+		int retryCount = 0;
+		var apiResult = new ApiResult<T>(false, default!);
+
+		while (retryCount < _skillsConfig.ApiRetryAmount)
 		{
-			// TODO: Mark for retry?
-			return string.Empty;
+			retryCount++;
+
+			apiResult = await PerformRequest<T>(url);
+
+			if (apiResult.Successful)
+			{
+				break;
+			}
 		}
 
-		return await response.Content.ReadAsStringAsync();
+		return apiResult;
 	}
 }
