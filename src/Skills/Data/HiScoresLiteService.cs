@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Skills.Models;
+using System.Text.Json;
 
 namespace Skills.Data;
 
@@ -23,18 +24,10 @@ internal class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 		if (!apiResult.Successful)
 		{
 			apiResult = await Retry(url);
+			// TODO: Log
 		}
 
 		return ConstructSkillSet(apiResult);
-	}
-
-	public async Task<IEnumerable<SkillSet>> GetSkillSetsAsync(IEnumerable<string> userNames)
-	{
-		var skillTasks = userNames.Select(GetSkillSetAsync);
-
-		var results = await Task.WhenAll(skillTasks);
-
-		return results;
 	}
 
 	private SkillSet ConstructSkillSet(ApiResult apiResult)
@@ -80,12 +73,15 @@ internal class HiScoresLiteService : RuneScapeApiService, ISkillDataRetriever
 
 		for (int i = 0; i < skillsAmount; i++)
 		{
-			var skillData = result[i].Split(",");
+			var skillData = JsonSerializer.Deserialize<int[]>(result[i]);
 
-			int.TryParse(skillData[LEVEL_INDEX], out var level);
-			int.TryParse(skillData[EXPERIENCE_INDEX], out var experience);
+			if (skillData == null)
+			{
+				skillData = new int[3];
+				// TODO: Log
+			}
 
-			data.Add(new int[] { 0, level, experience });
+			data.Add(skillData);
 		}
 
 		return data;
