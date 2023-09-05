@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Skills.Models;
-using System.Text.Json;
 
 namespace Skills.Data;
 

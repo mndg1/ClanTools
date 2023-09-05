@@ -33,7 +33,7 @@ internal abstract class RuneScapeApiService
 
 	protected async Task<ApiResult> Retry(string url)
 	{
-		_logger.LogInformation($"Retrying API call.");
+		_logger.LogInformation("Retrying API call for {url}.", url);
 
 		int retryCount = 0;
 		var apiResult = new ApiResult(false, string.Empty);
@@ -48,7 +48,7 @@ internal abstract class RuneScapeApiService
 
 			if (apiResult.Successful)
 			{
-				_logger.LogInformation("Retrying was successful.");
+				_logger.LogInformation("Retrying was successful for {url}.", url);
 				break;
 			}
 
