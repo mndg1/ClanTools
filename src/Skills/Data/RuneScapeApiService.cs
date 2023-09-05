@@ -29,17 +29,21 @@ internal abstract class RuneScapeApiService
 	{
 		int retryCount = 0;
 		var apiResult = new ApiResult(false, string.Empty);
+		var retryInterval = _skillsConfig.ApiRetryInterval;
 
 		while (retryCount < _skillsConfig.ApiRetryAmount)
 		{
 			retryCount++;
 
+			await Task.Delay(TimeSpan.FromSeconds(retryInterval));
 			apiResult = await PerformRequest(url);
 
 			if (apiResult.Successful)
 			{
 				break;
 			}
+
+			retryInterval *= _skillsConfig.ApiRetryExponent;
 		}
 
 		return apiResult;
