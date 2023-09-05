@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
 using Skills.Models;
-using System.Text.Json;
 
 namespace Skills.Data;
 
@@ -15,27 +14,27 @@ internal abstract class RuneScapeApiService
 		_skillsConfig = skillsConfig.Value;
 	}
 
-	internal async Task<ApiResult<T>> PerformRequest<T>(string url)
+	internal async Task<ApiResult> PerformRequest(string url)
 	{
 		using var httpClient = _httpClientFactory.CreateClient();
 		using var response = await httpClient.GetAsync(url);
 
-		var result = await JsonSerializer.DeserializeAsync<T>(response.Content.ReadAsStream());
-		var apiResult = new ApiResult<T>(response.IsSuccessStatusCode, result!);
+		var result = await response.Content.ReadAsStringAsync();
+		var apiResult = new ApiResult(response.IsSuccessStatusCode, result);
 
 		return apiResult;
 	}
 
-	protected async Task<ApiResult<T>> Retry<T>(string url)
+	protected async Task<ApiResult> Retry(string url)
 	{
 		int retryCount = 0;
-		var apiResult = new ApiResult<T>(false, default!);
+		var apiResult = new ApiResult(false, string.Empty);
 
 		while (retryCount < _skillsConfig.ApiRetryAmount)
 		{
 			retryCount++;
 
-			apiResult = await PerformRequest<T>(url);
+			apiResult = await PerformRequest(url);
 
 			if (apiResult.Successful)
 			{
