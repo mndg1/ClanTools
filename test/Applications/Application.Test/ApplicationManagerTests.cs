@@ -5,26 +5,48 @@ namespace Application.Test;
 
 public class ApplicationManagerTests
 {
+	private readonly IApplication _mockApplication;
+	private readonly IEnumerable<IApplication> _stubApplications;
 
-	[Theory]
-	[InlineData(true)]
-	[InlineData(false)]
-	public async Task StartApplicationsAsync_ApplicationShouldStartBasedOnSetting(bool shouldStart)
+	private const string MOCK_APPLICATION_NAME = "Fake";
+
+    public ApplicationManagerTests()
+    {
+        _mockApplication = Substitute.For<IApplication>();
+		_mockApplication.Name.Returns(MOCK_APPLICATION_NAME);
+
+		_stubApplications = new List<IApplication>()
+		{
+			_mockApplication
+		};
+	}
+
+    [Fact]
+	public async Task StartApplicationsAsync_ApplicationMarkedForStart_ReceivedStartCall()
 	{
 		// Arrange
-		var mockApplication = new ApplicationFake();
-		var stubApplications = new List<IApplication>()
-		{
-			mockApplication
-		};
-		var stubConfiguration = CreateSingleAppOptions(shouldStart);
-		var applicationManager = new ApplicationManager(stubApplications, stubConfiguration);
+		var stubConfiguration = CreateSingleAppOptions(true);
+		var applicationManager = new ApplicationManager(_stubApplications, stubConfiguration);
 
 		// Act
 		await applicationManager.StartApplicationsAsync();
 
 		// Assert
-		mockApplication.HasStarted.Should().Be(shouldStart);
+		await _mockApplication.Received().StartAsync();
+	}
+
+	[Fact]
+	public async Task StartApplicationsAsync_ApplicationNotMarkedForStart_DidNotReceiveStartCall()
+	{
+		// Arrange
+		var stubConfiguration = CreateSingleAppOptions(false);
+		var applicationManager = new ApplicationManager(_stubApplications, stubConfiguration);
+
+		// Act
+		await applicationManager.StartApplicationsAsync();
+
+		// Assert
+		await _mockApplication.DidNotReceive().StartAsync();
 	}
 
 	private IOptions<ApplicationsConfiguration> CreateSingleAppOptions(bool shouldStart)
@@ -33,7 +55,7 @@ public class ApplicationManagerTests
 		{
 			StartupApplications =
 			{
-				{ "Fake", shouldStart }
+				{ MOCK_APPLICATION_NAME, shouldStart }
 			}
 		};
 
