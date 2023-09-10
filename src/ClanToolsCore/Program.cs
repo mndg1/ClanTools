@@ -3,8 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Application;
-using Skills;
+using SkillHistory.Extensions;
+using Application.Extensions;
+using Skills.Extensions;
 
 var configuration = new ConfigurationBuilder()
 	.AddJsonFile("appsettings.json")
@@ -27,10 +28,6 @@ builder.Services.AddHttpClient();
 
 builder.Services.AddApplicationModule(configuration);
 builder.Services.AddSkillsModule(configuration);
+builder.Services.AddSkillHistoryModule();
 
 var host = builder.Build();
-
-var skillService = host.Services.GetRequiredService<ISkillService>();
-var skillSet = await skillService.GetSkillSetAsync("TheKap27");
-
-Console.WriteLine(skillSet.GetSkill("Overall").Level);

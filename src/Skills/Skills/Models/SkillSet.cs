@@ -2,22 +2,17 @@
 
 public class SkillSet
 {
-	internal IDictionary<string, Skill> Skills { get; init; }
+	public IDictionary<string, Skill> Skills { get; set; }
+
+	public SkillSet(Dictionary<string, Skill> skills) 
+	{ 
+		Skills = skills;
+	}
 
 	internal SkillSet(IEnumerable<string> skillNames) 
 	{
 		Skills = skillNames.ToDictionary(
 			skillName => skillName, 
 			skillName => new Skill(skillName, 0, 0));
-	}
-
-	public Skill GetSkill(string skillName)
-	{
-		return Skills[skillName];
-	}
-
-	public IEnumerable<Skill> GetSkills()
-	{
-		return Skills.Values;
 	}
 }
