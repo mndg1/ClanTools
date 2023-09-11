@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
 		services.AddTransient<ISkillHistoryService, SkillHistoryService>();
 		services.AddSingleton<ISkillHistoryDataService, SkillHistoryDataFileService>();
 
-		services.AddSingleton<IDataStore, DataStore>(x => new(SkillHistoryDataFileService.FILE_NAME));
+		services.AddSingleton<IDataStore, DataStore>(dataStore => new(SkillHistoryDataFileService.FILE_NAME));
 
 		return services;
 	}
