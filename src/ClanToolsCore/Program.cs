@@ -6,6 +6,7 @@ using Serilog;
 using SkillHistory.Extensions;
 using Application.Extensions;
 using Skills.Extensions;
+using UserIdentification.Extensions;
 
 var configuration = new ConfigurationBuilder()
 	.AddJsonFile("appsettings.json")
@@ -29,5 +30,6 @@ builder.Services.AddHttpClient();
 builder.Services.AddApplicationModule(configuration);
 builder.Services.AddSkillsModule(configuration);
 builder.Services.AddSkillHistoryModule();
+builder.Services.AddUserIdentificationModule();
 
 var host = builder.Build();
