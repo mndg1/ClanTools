@@ -18,6 +18,7 @@
     <ProjectReference Include="..\Applications\Application\Application.csproj" />
     <ProjectReference Include="..\Skills\SkillHistory\SkillHistory.csproj" />
     <ProjectReference Include="..\Skills\Skills\Skills.csproj" />
+    <ProjectReference Include="..\UserIdentification\UserIdentification.csproj" />
   </ItemGroup>
 
   <ItemGroup>
