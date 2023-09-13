@@ -3,13 +3,13 @@ using UserIdentification.Entities;
 
 namespace UserIdentification.Data;
 
-internal class UserIdentificationDataFileService : IUserIdentificationDataService
+internal class UserIdentificationDataFileStore : IUserIdentificationDataStore
 {
 	private readonly IDataStore _dataStore;
 
 	public const string FILE_NAME = "user_identification.json";
 
-	public UserIdentificationDataFileService(IDataStore dataStore)
+	public UserIdentificationDataFileStore(IDataStore dataStore)
 	{
 		_dataStore = dataStore;
 	}
@@ -18,9 +18,9 @@ internal class UserIdentificationDataFileService : IUserIdentificationDataServic
 	{
 		var collection = _dataStore.GetCollection<UserIdEntity>();
 
-		var updated = await collection.UpdateOneAsync(storedId => storedId.Guid == userId.Guid, userId);
+		var hasUpdated = await collection.UpdateOneAsync(storedId => storedId.Guid == userId.Guid, userId);
 
-		if (!updated)
+		if (!hasUpdated)
 		{
 			await collection.InsertOneAsync(userId);
 		}

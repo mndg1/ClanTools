@@ -2,7 +2,7 @@
 
 namespace UserIdentification.Data;
 
-internal interface IUserIdentificationDataService
+internal interface IUserIdentificationDataStore
 {
 	Task StoreUser(UserIdEntity userId);
 

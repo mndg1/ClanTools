@@ -7,7 +7,7 @@ namespace UserIdentification.Test;
 public class UserIdentificationServiceTests
 {
 	private readonly IUserIdenificationService _userIdenificationService;
-    private readonly IUserIdentificationDataService _userIdentificationDataServiceStub;
+    private readonly IUserIdentificationDataStore _userIdentificationDataServiceStub;
     private readonly IGuidProvider _guidProviderStub;
 
     private readonly UserIdEntity _newUserIdEntity;
@@ -23,7 +23,7 @@ public class UserIdentificationServiceTests
 
 	public UserIdentificationServiceTests()
     {
-        _userIdentificationDataServiceStub = Substitute.For<IUserIdentificationDataService>();
+        _userIdentificationDataServiceStub = Substitute.For<IUserIdentificationDataStore>();
 		_userIdentificationDataServiceStub.GetUserId(EXISTING_USER_ID).Returns(_existingUserIdEntity);
 
 		_guidProviderStub = Substitute.For<IGuidProvider>();

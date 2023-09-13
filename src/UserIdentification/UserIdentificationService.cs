@@ -6,12 +6,12 @@ namespace UserIdentification;
 
 internal class UserIdentificationService : IUserIdenificationService
 {
-	private readonly IUserIdentificationDataService _userIdentificationDataService;
+	private readonly IUserIdentificationDataStore _userIdentificationDataService;
 	private readonly IGuidProvider _guidProvider;
 	private readonly ILogger<UserIdentificationService> _logger;
 
 	public UserIdentificationService(
-		IUserIdentificationDataService userIdentificationDataService,
+		IUserIdentificationDataStore userIdentificationDataService,
 		IGuidProvider guidProvider,
 		ILogger<UserIdentificationService> logger)
 	{

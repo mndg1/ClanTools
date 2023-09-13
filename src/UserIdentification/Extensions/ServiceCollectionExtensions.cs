@@ -9,10 +9,10 @@ public static class ServiceCollectionExtensions
 	public static IServiceCollection AddUserIdentificationModule(this IServiceCollection services)
 	{
 		services.AddTransient<IUserIdenificationService, UserIdentificationService>();
-		services.AddSingleton<IUserIdentificationDataService, UserIdentificationDataFileService>();
+		services.AddSingleton<IUserIdentificationDataStore, UserIdentificationDataFileStore>();
 		services.AddSingleton<IGuidProvider, GuidProvider>();
 
-		services.AddSingleton<IDataStore, DataStore>(dataStore => new DataStore(UserIdentificationDataFileService.FILE_NAME));
+		services.AddSingleton<IDataStore, DataStore>(dataStore => new DataStore(UserIdentificationDataFileStore.FILE_NAME));
 
 		return services;
 	}
