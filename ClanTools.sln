@@ -36,7 +36,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserIdentification", "src\U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserIdentification.Test", "test\UserIdentification.Test\UserIdentification.Test.csproj", "{A9D73EE9-1EF0-472A-ACAD-6FD4B6AFF53A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skillathon", "src\Skills\Skillathon\Skillathon.csproj", "{189D016C-21E8-414A-84E8-59AF689637E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skillathon", "src\Skills\Skillathon\Skillathon.csproj", "{189D016C-21E8-414A-84E8-59AF689637E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{B80474F1-FC27-4927-8485-5A738F89B303}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\Applications\Console\ConsoleApp\ConsoleApp.csproj", "{4FB3F419-E939-452B-A837-67EB64662770}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +84,10 @@ Global
 		{189D016C-21E8-414A-84E8-59AF689637E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{189D016C-21E8-414A-84E8-59AF689637E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{189D016C-21E8-414A-84E8-59AF689637E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FB3F419-E939-452B-A837-67EB64662770}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FB3F419-E939-452B-A837-67EB64662770}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FB3F419-E939-452B-A837-67EB64662770}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FB3F419-E939-452B-A837-67EB64662770}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,6 +106,8 @@ Global
 		{4A3B831E-F916-4613-BD71-8D3D29737C83} = {1C9850C5-7043-4D9D-A8DD-1F7FB215D635}
 		{A9D73EE9-1EF0-472A-ACAD-6FD4B6AFF53A} = {05CBB44C-4800-4564-AE11-34E1837562A1}
 		{189D016C-21E8-414A-84E8-59AF689637E1} = {6D60EE28-8865-4CEC-A900-AF22080583F3}
+		{B80474F1-FC27-4927-8485-5A738F89B303} = {92C6B929-C3B0-409F-981B-31122EAAD3E9}
+		{4FB3F419-E939-452B-A837-67EB64662770} = {B80474F1-FC27-4927-8485-5A738F89B303}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AD96FD7-87E2-4C1A-81DF-BC2FAEE233FD}

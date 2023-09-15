@@ -4,7 +4,7 @@ using UserIdentification.Entities;
 
 namespace UserIdentification;
 
-internal class UserIdentificationService : IUserIdenificationService
+internal class UserIdentificationService : IUserIdentificationService
 {
 	private readonly IUserIdentificationDataStore _userIdentificationDataService;
 	private readonly IGuidProvider _guidProvider;
@@ -20,20 +20,22 @@ internal class UserIdentificationService : IUserIdenificationService
 		_logger = logger;
 	}
 
-	public async Task RegisterNewUser(string userName)
+	public async Task<Guid?> RegisterNewUser(string userName)
 	{
 		var isRegisterd = await IsRegistered(userName);
 
 		if (isRegisterd)
 		{
 			_logger.LogInformation("Attempted to register user {userName} but {userName} is already a registered user.", userName);
-			return;
+			return null;
 		}
 
 		var guid = _guidProvider.CreateGuid();
 		var userId = new UserIdEntity(userName, guid.ToString());
 
 		await _userIdentificationDataService.StoreUser(userId);
+
+		return guid;
 	}
 
 	public async Task<Guid?> GetUserId(string userName)

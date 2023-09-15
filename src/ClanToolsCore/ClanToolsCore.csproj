@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MassTransit" Version="8.1.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Serilog.Extensions.Hosting" Version="7.0.0" />
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Applications\Application\Application.csproj" />
+    <ProjectReference Include="..\Applications\Console\ConsoleApp\ConsoleApp.csproj" />
     <ProjectReference Include="..\Skills\SkillHistory\SkillHistory.csproj" />
     <ProjectReference Include="..\Skills\Skills\Skills.csproj" />
     <ProjectReference Include="..\UserIdentification\UserIdentification.csproj" />

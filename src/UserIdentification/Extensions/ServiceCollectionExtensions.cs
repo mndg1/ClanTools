@@ -8,7 +8,7 @@ public static class ServiceCollectionExtensions
 {
 	public static IServiceCollection AddUserIdentificationModule(this IServiceCollection services)
 	{
-		services.AddTransient<IUserIdenificationService, UserIdentificationService>();
+		services.AddTransient<IUserIdentificationService, UserIdentificationService>();
 		services.AddSingleton<IUserIdentificationDataStore, UserIdentificationDataFileStore>();
 		services.AddSingleton<IGuidProvider, GuidProvider>();
 

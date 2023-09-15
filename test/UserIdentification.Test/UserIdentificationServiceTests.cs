@@ -6,7 +6,7 @@ namespace UserIdentification.Test;
 
 public class UserIdentificationServiceTests
 {
-	private readonly IUserIdenificationService _userIdenificationService;
+	private readonly IUserIdentificationService _userIdenificationService;
     private readonly IUserIdentificationDataStore _userIdentificationDataServiceStub;
     private readonly IGuidProvider _guidProviderStub;
 

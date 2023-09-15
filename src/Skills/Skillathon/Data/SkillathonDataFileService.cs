@@ -35,6 +35,13 @@ internal class SkillathonDataFileService : ISkillathonDataService
 		return Task.FromResult(skillathon);
 	}
 
+	public Task<IEnumerable<SkillathonEvent>> GetSkillathonsAsync()
+	{
+		var collection = _dataStore.GetCollection<SkillathonEvent>();
+
+		return Task.FromResult(collection.AsQueryable());
+	}
+
 	public async Task DeleteSkillathonAsync(string eventName)
 	{
 		var collection = _dataStore.GetCollection<SkillathonEvent>();

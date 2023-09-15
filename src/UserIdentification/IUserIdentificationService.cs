@@ -1,8 +1,8 @@
 ﻿namespace UserIdentification;
 
-public interface IUserIdenificationService
+public interface IUserIdentificationService
 {
-	Task RegisterNewUser(string userName);
+	Task<Guid?> RegisterNewUser(string userName);
 
 	Task<Guid?> GetUserId(string userName);
 

@@ -49,7 +49,7 @@ internal class SkillathonService : ISkillathonService
 		return skillathon;
 	}
 
-	public Task<SkillathonEvent> GetSkillathonAsync(string eventName)
+	public Task<SkillathonEvent?> GetSkillathonAsync(string eventName)
 	{
 		var skillathon = _skillathonDataService.GetSkillathonAsync(eventName);
 

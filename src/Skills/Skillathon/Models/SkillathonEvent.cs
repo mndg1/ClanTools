@@ -5,14 +5,17 @@ public class SkillathonEvent
 	public string EventName { get; set; }
 	public string SkillName { get; set; }
 
-    public DateTime? StartTime { get; set; }
-    public DateTime? EndTime { get; set; }
+	public DateTime? StartTime { get; set; }
+	public DateTime? LastUpdate { get; set; }
+	public DateTime? EndTime { get; set; }
 
-    public IList<string> ParticipantNames { get; set; } = new List<string>();
+	public SkillathonState State { get; internal set; }
 
-    internal SkillathonEvent(string eventName, string skillName)
-    {
-        EventName = eventName;
-        SkillName = skillName;
-    }
+	public IList<string> ParticipantNames { get; set; } = new List<string>();
+
+	internal SkillathonEvent(string eventName, string skillName)
+	{
+		EventName = eventName;
+		SkillName = skillName;
+	}
 }

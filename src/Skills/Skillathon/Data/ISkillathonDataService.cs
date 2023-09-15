@@ -8,5 +8,7 @@ internal interface ISkillathonDataService
 
 	Task<SkillathonEvent?> GetSkillathonAsync(string eventName);
 
+	Task<IEnumerable<SkillathonEvent>> GetSkillathonsAsync();
+
 	Task DeleteSkillathonAsync(string eventName);
 }

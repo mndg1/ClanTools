@@ -1,29 +1,21 @@
-﻿using Skillathon.Models;
+﻿using MassTransit;
+using Skillathon.Models;
 
 namespace Skillathon.Publishing;
 
 internal class SkillathonPublisher : ISkillathonPublisher
 {
-	public ISet<ISkillathonSubscriber> Subscribers { get; init; } = new HashSet<ISkillathonSubscriber>();
+	private readonly IBus _bus;
 
-	public async Task PublishSkillathonStart(SkillathonEvent skillathon)
+	public SkillathonPublisher(IBus bus)
 	{
-		var publishTasks = Subscribers.Select(sub => sub.ConsumeSkillathonStart(skillathon));
-
-		await Task.WhenAll(publishTasks);
+		_bus = bus;
 	}
 
-	public async Task PublishSkillathonUpdate(SkillathonEvent skillathon)
+	public async Task PublishSkillathonAsync(SkillathonEvent skillathon, EventMessageStatus status)
 	{
-		var publishTasks = Subscribers.Select(sub => sub.ConsumeSkillathonUpdate(skillathon));
+		var message = new SkillathonEventMessage(skillathon, status);
 
-		await Task.WhenAll(publishTasks);
-	}
-
-	public async Task PublishSkillathonEnd(SkillathonEvent skillathon)
-	{
-		var publishTasks =  Subscribers.Select(sub => sub.ConsumeSkillathonEnd(skillathon));
-		
-		await Task.WhenAll(publishTasks);
+		await _bus.Publish(message);
 	}
 }
