@@ -12,10 +12,20 @@ internal class SkillathonPublisher : ISkillathonPublisher
 		_bus = bus;
 	}
 
-	public async Task PublishSkillathonAsync(SkillathonEvent skillathon, EventMessageStatus status)
+	public async Task PublishSkillathonAsync(SkillathonEvent skillathon)
 	{
-		var message = new SkillathonEventMessage(skillathon, status);
+		var message = CreateMessage(skillathon);
 
 		await _bus.Publish(message);
+	}
+
+	private SkillathonEventMessage CreateMessage(SkillathonEvent skillathon)
+	{
+		var eventName = skillathon.EventName;
+		var skillName = skillathon.SkillName;
+		var participantsData = skillathon.Participants;
+		var terminate = skillathon.State == SkillathonState.Ended;
+
+		return new SkillathonEventMessage(eventName, skillName, participantsData, terminate);
 	}
 }

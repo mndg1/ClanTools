@@ -1,7 +1,5 @@
-﻿using MassTransit;
-using Microsoft.TeamFoundation.Framework.Common;
+﻿using Shared;
 using Skillathon.Models;
-using Skillathon.Publishing;
 using SkillHistory;
 using Skills;
 using UserIdentification;
@@ -10,20 +8,17 @@ namespace Skillathon;
 
 internal class SkillathonProcessor : ISkillathonProcessor
 {
-	private readonly IBus _bus;
 	private readonly IUserIdentificationService _userIdenificationService;
 	private readonly ISkillService _skillService;
 	private readonly ISkillHistoryService _skillHistoryService;
 	private readonly ITimeProvider _timeProvider;
 
 	public SkillathonProcessor(
-		IBus bus,
 		IUserIdentificationService userIdenificationService,
 		ISkillService skillService,
 		ISkillHistoryService skillHistoryService,
 		ITimeProvider timeProvider)
 	{
-		_bus = bus;
 		_userIdenificationService = userIdenificationService;
 		_skillService = skillService;
 		_skillHistoryService = skillHistoryService;
@@ -34,54 +29,63 @@ internal class SkillathonProcessor : ISkillathonProcessor
 	{
 		foreach (var skillathon in skillathons)
 		{
-			if (ShouldStart(skillathon))
+			var hasUpdated = UpdateState(skillathon);
+
+			if (!hasUpdated)
 			{
-				await StartAsync(skillathon);
+				continue;
 			}
-			else if (ShouldEnd(skillathon))
-			{
-				await EndAsync(skillathon);
-			}
-			else
-			{
-				await UpdateAsync(skillathon);
-				var message = new SkillathonEventMessage(skillathon, EventMessageStatus.Update);
-				await _bus.Publish(message);
-			}
+
+			await UpdateSkillathonAsync(skillathon);
 		}
 
 		return skillathons;
 	}
 
-	private async Task StartAsync(SkillathonEvent skillathon)
+	private bool UpdateState(SkillathonEvent skillathon)
 	{
-		var message = new SkillathonEventMessage(skillathon, EventMessageStatus.Start);
+		var updated = false;
 
-		skillathon.State = SkillathonState.Active;
-		await UpdateAsync(skillathon);
+		if (ShouldStart(skillathon))
+		{
+			skillathon.State = SkillathonState.Active;
+			updated = true;
+		}
+		else if (ShouldEnd(skillathon))
+		{
+			skillathon.State = SkillathonState.Ended;
+			updated = true;
+		}
 
-		await _bus.Publish(message);
+		return updated;
 	}
 
-	private async Task UpdateAsync(SkillathonEvent skillathon)
+	private async Task UpdateSkillathonAsync(SkillathonEvent skillathon)
 	{
-		foreach (var participantName in  skillathon.ParticipantNames)
+		if (skillathon.State != SkillathonState.Active)
 		{
-			var userId = await _userIdenificationService.GetUserId(participantName) ?? await _userIdenificationService.RegisterNewUser(participantName);
-			var skillSet = await _skillService.GetSkillSetAsync(participantName);
+			return;
+		}
+
+		foreach (var participantData in skillathon.Participants)
+		{
+			var name = participantData.Name;
+
+			var skillSet = await _skillService.GetSkillSetAsync(name);
+			var userId = await _userIdenificationService.GetUserId(name) 
+				?? await _userIdenificationService.RegisterNewUser(name);
 
 			await _skillHistoryService.StoreCurrentDataAsync(userId.Value, skillSet);
+
+			var startDate = skillathon.StartDate!.Value.ToDateTime(TimeOnly.MinValue);
+			var historicData = await _skillHistoryService.GetSkillHistorySinceAsync(userId.Value, startDate);
+
+			participantData.ExperienceHistory = historicData.SkillHistory.ToDictionary(
+				historicEntry => historicEntry.Key,
+				historicEntry => historicEntry.Value.Skills[skillathon.SkillName.ToLower()].Experience);
 		}
-	}
 
-	private async Task EndAsync(SkillathonEvent skillathon)
-	{
-		var message = new SkillathonEventMessage(skillathon, EventMessageStatus.End);
-
-		skillathon.State = SkillathonState.Ended;
-		await UpdateAsync(skillathon);
-
-		await _bus.Publish(message);
+		skillathon.LastUpdateTime = _timeProvider.UtcNow;
 	}
 
 	private bool ShouldStart(SkillathonEvent skillathon)
@@ -91,25 +95,25 @@ internal class SkillathonProcessor : ISkillathonProcessor
 			return false;
 		}
 
-		if (skillathon.StartTime is null)
+		if (skillathon.StartDate is null)
 		{
 			return false;
 		}
 
-		var currentTime = _timeProvider.Now.ToUniversalTime();
+		var currentDate = DateOnly.FromDateTime(_timeProvider.UtcNow);
 
-		return skillathon.StartTime >= currentTime;
+		return skillathon.StartDate <= currentDate;
 	}
 
 	private bool ShouldEnd(SkillathonEvent skillathon)
 	{
-		if (skillathon.EndTime is null)
+		if (skillathon.EndDate is null)
 		{
 			return false;
 		}
 
-		var currentTime = _timeProvider.Now.ToUniversalTime();
+		var currentDate = DateOnly.FromDateTime(_timeProvider.UtcNow);
 
-		return skillathon.EndTime <= currentTime;
+		return skillathon.EndDate <= currentDate;
 	}
 }

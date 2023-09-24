@@ -40,7 +40,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skillathon", "src\Skills\Sk
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{B80474F1-FC27-4927-8485-5A738F89B303}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "src\Applications\Console\ConsoleApp\ConsoleApp.csproj", "{4FB3F419-E939-452B-A837-67EB64662770}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "src\Applications\Console\ConsoleApp\ConsoleApp.csproj", "{4FB3F419-E939-452B-A837-67EB64662770}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "src\Shared\Shared.csproj", "{7B82E6F5-E6E3-4983-BC1C-80455423A4F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -88,6 +90,10 @@ Global
 		{4FB3F419-E939-452B-A837-67EB64662770}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FB3F419-E939-452B-A837-67EB64662770}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FB3F419-E939-452B-A837-67EB64662770}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B82E6F5-E6E3-4983-BC1C-80455423A4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B82E6F5-E6E3-4983-BC1C-80455423A4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B82E6F5-E6E3-4983-BC1C-80455423A4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B82E6F5-E6E3-4983-BC1C-80455423A4F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -108,6 +114,7 @@ Global
 		{189D016C-21E8-414A-84E8-59AF689637E1} = {6D60EE28-8865-4CEC-A900-AF22080583F3}
 		{B80474F1-FC27-4927-8485-5A738F89B303} = {92C6B929-C3B0-409F-981B-31122EAAD3E9}
 		{4FB3F419-E939-452B-A837-67EB64662770} = {B80474F1-FC27-4927-8485-5A738F89B303}
+		{7B82E6F5-E6E3-4983-BC1C-80455423A4F1} = {1C9850C5-7043-4D9D-A8DD-1F7FB215D635}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1AD96FD7-87E2-4C1A-81DF-BC2FAEE233FD}

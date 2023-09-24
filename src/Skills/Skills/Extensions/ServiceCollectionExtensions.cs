@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         services.AddOptions<SkillsConfiguration>()
             .Bind(configuration.GetSection(SkillsConfiguration.SECTION_NAME));
 
-        services.AddSingleton<ISkillService, SkillService>();
+        services.AddTransient<ISkillService, SkillService>();
 
         services.AddSkillsData();
 

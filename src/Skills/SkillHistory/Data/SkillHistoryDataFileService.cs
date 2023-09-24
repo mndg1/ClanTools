@@ -1,5 +1,6 @@
 ﻿using JsonFlatFileDataStore;
 using Microsoft.Extensions.Logging;
+using Shared;
 using SkillHistory.Models;
 using Skills.Models;
 
@@ -12,9 +13,9 @@ internal class SkillHistoryDataFileService : ISkillHistoryDataService
 
 	public const string FILE_NAME = "skill_history.json";
 
-	public SkillHistoryDataFileService(IDataStore dataStore, ILogger<SkillHistoryDataFileService> logger)
+	public SkillHistoryDataFileService(IEnumerable<INamedDataStore> dataStores, ILogger<SkillHistoryDataFileService> logger)
 	{
-		_dataStore = dataStore;
+		_dataStore = dataStores.First(dataStore => dataStore.FileName.Equals(FILE_NAME)).DataStore;
 		_logger = logger;
 	}
 

@@ -1,4 +1,5 @@
 ﻿using JsonFlatFileDataStore;
+using Shared;
 using Skillathon.Models;
 
 namespace Skillathon.Data;
@@ -9,18 +10,22 @@ internal class SkillathonDataFileService : ISkillathonDataService
 
 	public const string FILE_NAME = "skillathons.json";
 
-	public SkillathonDataFileService(IDataStore dataStore)
+	public SkillathonDataFileService(IEnumerable<INamedDataStore> dataStores)
 	{
-		_dataStore = dataStore;
+		_dataStore = dataStores.First(dataStore => dataStore.FileName.Equals(FILE_NAME)).DataStore;
 	}
 
 	public async Task StoreSkillathonAsync(SkillathonEvent skillathon)
 	{
 		var collection = _dataStore.GetCollection<SkillathonEvent>();
 
-		var hasUpdated = await collection.UpdateOneAsync(existing => IsMatchingName(existing.EventName, skillathon.EventName), skillathon);
+		var existing = collection.AsQueryable().FirstOrDefault(existing => IsMatchingName(existing.EventName, skillathon.EventName));
 
-		if (!hasUpdated)
+		if (existing is not null)
+		{
+			await collection.ReplaceOneAsync(existing => IsMatchingName(existing.EventName, skillathon.EventName), skillathon);
+		}
+		else
 		{
 			await collection.InsertOneAsync(skillathon);
 		}

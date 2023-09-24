@@ -23,23 +23,17 @@ internal class SkillathonService : ISkillathonService
 
 	public async Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName)
 	{
-		var creationFailed = false;
 		var existingEvent = await GetSkillathonAsync(eventName);
 
 		if (existingEvent is not null)
 		{
 			_logger.LogWarning("Could not create Skillathon event {eventName} because an event with that name already exists.", eventName);
-			creationFailed = true;
+			return await GetSkillathonAsync(eventName);
 		}
 
 		if (!IsExistingSkill(skillName, out var actualName)) 
 		{
 			_logger.LogError("Could not create Skillathon event because {skillName} is not an actual skill.", skillName);
-			creationFailed = true;
-		}
-
-		if (creationFailed)
-		{
 			return null!;
 		}
 
@@ -49,9 +43,9 @@ internal class SkillathonService : ISkillathonService
 		return skillathon;
 	}
 
-	public Task<SkillathonEvent?> GetSkillathonAsync(string eventName)
+	public async Task<SkillathonEvent> GetSkillathonAsync(string eventName)
 	{
-		var skillathon = _skillathonDataService.GetSkillathonAsync(eventName);
+		var skillathon = await _skillathonDataService.GetSkillathonAsync(eventName);
 
 		if (skillathon is null)
 		{
@@ -60,6 +54,11 @@ internal class SkillathonService : ISkillathonService
 		}
 
 		return skillathon;
+	}
+
+	public async Task UpdateSkillathonAsync(SkillathonEvent skillathon)
+	{
+		await _skillathonDataService.StoreSkillathonAsync(skillathon);
 	}
 
 	public async Task DeleteSkillathonAsync(string eventName)

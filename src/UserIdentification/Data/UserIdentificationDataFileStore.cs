@@ -1,4 +1,5 @@
 ﻿using JsonFlatFileDataStore;
+using Shared;
 using UserIdentification.Entities;
 
 namespace UserIdentification.Data;
@@ -9,9 +10,9 @@ internal class UserIdentificationDataFileStore : IUserIdentificationDataStore
 
 	public const string FILE_NAME = "user_identification.json";
 
-	public UserIdentificationDataFileStore(IDataStore dataStore)
+	public UserIdentificationDataFileStore(IEnumerable<INamedDataStore> dataStores)
 	{
-		_dataStore = dataStore;
+		_dataStore = dataStores.First(dataStore => dataStore.FileName.Equals(FILE_NAME)).DataStore;
 	}
 
 	public async Task StoreUser(UserIdEntity userId)

@@ -27,7 +27,7 @@ internal class UserIdentificationService : IUserIdentificationService
 		if (isRegisterd)
 		{
 			_logger.LogInformation("Attempted to register user {userName} but {userName} is already a registered user.", userName);
-			return null;
+			return await GetUserId(userName);
 		}
 
 		var guid = _guidProvider.CreateGuid();
