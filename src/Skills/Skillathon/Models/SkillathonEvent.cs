@@ -42,8 +42,6 @@ public class SkillathonEvent
 
 	public bool ContainsPlayer(string userName)
 	{
-		return Participants
-			.Select(participant => participant.Name.Equals(userName, StringComparison.OrdinalIgnoreCase))
-			.Any();
+		return Participants.Any(participant => participant.Name.Equals(userName, StringComparison.OrdinalIgnoreCase));
 	}
 }

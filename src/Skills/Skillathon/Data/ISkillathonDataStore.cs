@@ -2,7 +2,7 @@
 
 namespace Skillathon.Data;
 
-internal interface ISkillathonDataService
+internal interface ISkillathonDataStore
 {
 	Task StoreSkillathonAsync(SkillathonEvent skillathon);
 

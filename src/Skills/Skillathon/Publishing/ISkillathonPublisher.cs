@@ -4,5 +4,5 @@ namespace Skillathon.Publishing;
 
 internal interface ISkillathonPublisher
 {
-	Task PublishSkillathonAsync(SkillathonEvent skillathon);
+	Task PublishSkillathonEventAsync(SkillathonEvent skillathon, EventMessageStatus messageStatus);
 }

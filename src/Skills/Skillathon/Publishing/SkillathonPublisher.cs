@@ -1,4 +1,7 @@
 ﻿using MassTransit;
+using MessagingContracts.Skills.Skillathon;
+using MessagingContracts.Skills.Skillathon.Dtos;
+using Skillathon.Exceptions;
 using Skillathon.Models;
 
 namespace Skillathon.Publishing;
@@ -12,20 +15,49 @@ internal class SkillathonPublisher : ISkillathonPublisher
 		_bus = bus;
 	}
 
-	public async Task PublishSkillathonAsync(SkillathonEvent skillathon)
+	public async Task PublishSkillathonEventAsync(SkillathonEvent skillathon, EventMessageStatus messageStatus)
 	{
-		var message = CreateMessage(skillathon);
+		var publishTask = messageStatus switch
+		{
+			EventMessageStatus.Created => _bus.Publish(CreateCreatedMessage(skillathon)),
+			EventMessageStatus.Started => _bus.Publish(CreateStartedMessage(skillathon)),
+			EventMessageStatus.Updated => _bus.Publish(CreateUpdatedMessage(skillathon)),
+			EventMessageStatus.Terminated => _bus.Publish(CreateTerminatedMessage(skillathon)),
+			EventMessageStatus.Deleted => _bus.Publish(CreateDeletedMessage(skillathon)),
+			_ => throw new StatusNotSupportedException("The given status is not yet supported")
+		};
 
-		await _bus.Publish(message);
+		await publishTask;
 	}
 
-	private SkillathonEventMessage CreateMessage(SkillathonEvent skillathon)
+	private SkillathonCreated CreateCreatedMessage(SkillathonEvent skillathon)
 	{
-		var eventName = skillathon.EventName;
-		var skillName = skillathon.SkillName;
-		var participantsData = skillathon.Participants;
-		var terminate = skillathon.State == SkillathonState.Ended;
+		return new SkillathonCreated(skillathon.EventName, skillathon.SkillName);
+	}
 
-		return new SkillathonEventMessage(eventName, skillName, participantsData, terminate);
+	private SkillathonStarted CreateStartedMessage(SkillathonEvent skillathon)
+	{
+		var dtos = skillathon.Participants.Select(participant => new ParticipantDto(participant.Name, participant.ExperienceHistory));
+
+		return new SkillathonStarted(skillathon.EventName, skillathon.SkillName, dtos);
+	}
+
+	private SkillathonUpdated CreateUpdatedMessage(SkillathonEvent skillathon)
+	{
+		var dtos = skillathon.Participants.Select(participant => new ParticipantDto(participant.Name, participant.ExperienceHistory));
+
+		return new SkillathonUpdated(skillathon.EventName, skillathon.SkillName, dtos);
+	}
+
+	private SkillathonTerminated CreateTerminatedMessage(SkillathonEvent skillathon)
+	{
+		var dtos = skillathon.Participants.Select(participant => new ParticipantDto(participant.Name, participant.ExperienceHistory));
+
+		return new SkillathonTerminated(skillathon.EventName, skillathon.SkillName, dtos);
+	}
+
+	private SkillathonDeleted CreateDeletedMessage(SkillathonEvent skillathon)
+	{
+		return new SkillathonDeleted(skillathon.EventName);
 	}
 }

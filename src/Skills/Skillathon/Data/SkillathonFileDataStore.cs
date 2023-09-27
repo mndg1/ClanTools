@@ -4,13 +4,13 @@ using Skillathon.Models;
 
 namespace Skillathon.Data;
 
-internal class SkillathonDataFileService : ISkillathonDataService
+internal class SkillathonFileDataStore : ISkillathonDataStore
 {
 	private readonly IDataStore _dataStore;
 
 	public const string FILE_NAME = "skillathons.json";
 
-	public SkillathonDataFileService(IEnumerable<INamedDataStore> dataStores)
+	public SkillathonFileDataStore(IEnumerable<INamedDataStore> dataStores)
 	{
 		_dataStore = dataStores.First(dataStore => dataStore.FileName.Equals(FILE_NAME)).DataStore;
 	}

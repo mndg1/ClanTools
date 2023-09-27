@@ -33,9 +33,14 @@ builder.Services.AddLogging(loggerBuilder =>
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddMassTransit(busConfig =>
+builder.Services.AddMassTransit(busRegistrationConfig =>
 {
-	busConfig.UsingInMemory();
+	busRegistrationConfig.AddSkillathonConsumers();
+
+	busRegistrationConfig.UsingInMemory((busRegistrationContext, busFactoryConfig) =>
+	{
+		busFactoryConfig.ConfigureEndpoints(busRegistrationContext);
+	});
 });
 
 builder.Services.AddShared();
@@ -57,7 +62,7 @@ await appManager.StartApplicationsAsync();
 var skillathonService = host.Services.GetRequiredService<ISkillathonService>();
 var skillathon = await skillathonService.CreateSkillathonAsync("test", "Fishing");
 skillathon.RegisterParticipant("TheKap27");
-skillathon.StartDate = DateOnly.FromDateTime(DateTime.UtcNow);
+skillathon.RegisterParticipant("Taifis");
 await skillathonService.UpdateSkillathonAsync(skillathon);
 
 await host.RunAsync();

@@ -1,43 +1,30 @@
 ﻿using Microsoft.Extensions.Logging;
+using Skillathon.Modification;
 using Skillathon.Data;
 using Skillathon.Models;
-using Skills;
 
 namespace Skillathon;
 
 internal class SkillathonService : ISkillathonService
 {
-	private readonly ISkillathonDataService _skillathonDataService;
-	private readonly ISkillService _skillService;
+	private readonly ISkillathonDataStore _skillathonDataService;
+	private readonly ISkillathonCreator _skillathonCreator;
 	private readonly ILogger<SkillathonService> _logger;
 
 	public SkillathonService(
-		ISkillathonDataService skillathonDataService,
-		ISkillService skillService,
+		ISkillathonDataStore skillathonDataService,
+		ISkillathonCreator skillathonCreator,
 		ILogger<SkillathonService> logger)
 	{
 		_skillathonDataService = skillathonDataService;
-		_skillService = skillService;
+		_skillathonCreator = skillathonCreator;
 		_logger = logger;
 	}
 
-	public async Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName)
+	public async Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null)
 	{
-		var existingEvent = await GetSkillathonAsync(eventName);
-
-		if (existingEvent is not null)
-		{
-			_logger.LogWarning("Could not create Skillathon event {eventName} because an event with that name already exists.", eventName);
-			return await GetSkillathonAsync(eventName);
-		}
-
-		if (!IsExistingSkill(skillName, out var actualName)) 
-		{
-			_logger.LogError("Could not create Skillathon event because {skillName} is not an actual skill.", skillName);
-			return null!;
-		}
-
-		var skillathon = new SkillathonEvent(eventName, actualName);
+		var skillathon = await _skillathonCreator.CreateSkillathonAsync(eventName, skillName, startDate, endDate);
+		
 		await _skillathonDataService.StoreSkillathonAsync(skillathon);
 
 		return skillathon;
@@ -64,12 +51,5 @@ internal class SkillathonService : ISkillathonService
 	public async Task DeleteSkillathonAsync(string eventName)
 	{
 		await _skillathonDataService.DeleteSkillathonAsync(eventName);
-	}
-
-	private bool IsExistingSkill(string skillToCheck, out string actualName)
-	{
-		actualName = _skillService.GetSkillNames().First(skillName => skillName.Equals(skillToCheck, StringComparison.OrdinalIgnoreCase));
-		
-		return !string.IsNullOrWhiteSpace(actualName);
 	}
 }
