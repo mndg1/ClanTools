@@ -6,11 +6,11 @@ namespace SkillathonEvent.Modification;
 
 internal class SkillathonEditor : ISkillathonEditor, IConsumer<EditSkillathon>
 {
-	private readonly ISkillathonDataStore _skillathonDataService;
+	private readonly ISkillathonDataStore _skillathonDataStore;
 
-	public SkillathonEditor(ISkillathonDataStore skillathonDataService)
+	public SkillathonEditor(ISkillathonDataStore skillathonDataStore)
 	{
-		_skillathonDataService = skillathonDataService;
+		_skillathonDataStore = skillathonDataStore;
 	}
 
 	public async Task SetStartDateAsync(string eventName, DateOnly? date)
@@ -20,7 +20,7 @@ internal class SkillathonEditor : ISkillathonEditor, IConsumer<EditSkillathon>
 			return;
 		}
 
-		var skillathon = await _skillathonDataService.GetSkillathonAsync(eventName);
+		var skillathon = await _skillathonDataStore.GetSkillathonAsync(eventName);
 
 		if (skillathon is null) 
 		{
@@ -28,7 +28,7 @@ internal class SkillathonEditor : ISkillathonEditor, IConsumer<EditSkillathon>
 		}
 
 		skillathon.StartDate = date;
-		await _skillathonDataService.StoreSkillathonAsync(skillathon);
+		await _skillathonDataStore.StoreSkillathonAsync(skillathon);
 	}
 
 	public async Task SetEndDateAsync(string eventName, DateOnly? date)
@@ -38,7 +38,7 @@ internal class SkillathonEditor : ISkillathonEditor, IConsumer<EditSkillathon>
 			return;
 		}
 
-		var skillathon = await _skillathonDataService.GetSkillathonAsync(eventName);
+		var skillathon = await _skillathonDataStore.GetSkillathonAsync(eventName);
 
 		if (skillathon is null)
 		{
@@ -46,7 +46,7 @@ internal class SkillathonEditor : ISkillathonEditor, IConsumer<EditSkillathon>
 		}
 
 		skillathon.EndDate = date;
-		await _skillathonDataService.StoreSkillathonAsync(skillathon);
+		await _skillathonDataStore.StoreSkillathonAsync(skillathon);
 	}
 
 	public async Task Consume(ConsumeContext<EditSkillathon> context)

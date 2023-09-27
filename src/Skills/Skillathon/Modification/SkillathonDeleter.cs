@@ -6,16 +6,16 @@ namespace SkillathonEvent.Modification;
 
 internal class SkillathonDeleter : ISkillathonDeleter, IConsumer<DeleteSkillathon>
 {
-	private readonly ISkillathonDataStore _skillathonDataService;
+	private readonly ISkillathonDataStore _skillathonDataStore;
 
-	public SkillathonDeleter(ISkillathonDataStore skillathonDataService)
+	public SkillathonDeleter(ISkillathonDataStore skillathonDataStore)
 	{
-		_skillathonDataService = skillathonDataService;
+		_skillathonDataStore = skillathonDataStore;
 	}
 
 	public async Task DeleteSkillathonAsync(string eventName)
 	{
-		await _skillathonDataService.DeleteSkillathonAsync(eventName);
+		await _skillathonDataStore.DeleteSkillathonAsync(eventName);
 	}
 
 	public async Task Consume(ConsumeContext<DeleteSkillathon> context)

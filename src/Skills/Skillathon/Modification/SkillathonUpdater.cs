@@ -39,12 +39,6 @@ internal class SkillathonUpdater : ISkillathonUpdater, IConsumer<UpdateSkillatho
         _logger = logger;
     }
 
-    public async Task Consume(ConsumeContext<UpdateSkillathon> context)
-    {
-        var eventName = context.Message.EventName;
-        await UpdateSkillathonAsync(eventName);
-    }
-
     public async Task UpdateSkillathonAsync(string eventName)
     {
         var skillathon = await _skillathonDataService.GetSkillathonAsync(eventName);
@@ -81,5 +75,11 @@ internal class SkillathonUpdater : ISkillathonUpdater, IConsumer<UpdateSkillatho
         skillathon.LastUpdateTime = _timeProvider.UtcNow;
 
         await _skillathonPublisher.PublishSkillathonEventAsync(skillathon, EventMessageStatus.Updated);
-    }
+	}
+
+	public async Task Consume(ConsumeContext<UpdateSkillathon> context)
+	{
+		var eventName = context.Message.EventName;
+		await UpdateSkillathonAsync(eventName);
+	}
 }
