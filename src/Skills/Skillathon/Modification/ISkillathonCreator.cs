@@ -1,8 +1,8 @@
-﻿using Skillathon.Models;
+﻿using SkillathonEvent.Models;
 
-namespace Skillathon.Modification;
+namespace SkillathonEvent.Modification;
 
 internal interface ISkillathonCreator
 {
-	Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null);
+	Task<Skillathon> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null);
 }

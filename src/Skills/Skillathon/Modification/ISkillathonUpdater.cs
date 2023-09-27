@@ -1,6 +1,6 @@
-﻿using Skillathon.Models;
+﻿using SkillathonEvent.Models;
 
-namespace Skillathon.Modification;
+namespace SkillathonEvent.Modification;
 
 public interface ISkillathonUpdater
 {

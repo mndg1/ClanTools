@@ -1,8 +1,8 @@
-﻿using Skillathon.Models;
+﻿using SkillathonEvent.Models;
 
-namespace Skillathon.Publishing;
+namespace SkillathonEvent.Publishing;
 
 internal interface ISkillathonPublisher
 {
-	Task PublishSkillathonEventAsync(SkillathonEvent skillathon, EventMessageStatus messageStatus);
+	Task PublishSkillathonEventAsync(Skillathon skillathon, EventMessageStatus messageStatus);
 }

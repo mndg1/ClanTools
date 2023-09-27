@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using Skillathon.Modification;
-using Skillathon.Data;
-using Skillathon.Models;
+using SkillathonEvent.Modification;
+using SkillathonEvent.Data;
+using SkillathonEvent.Models;
 
-namespace Skillathon;
+namespace SkillathonEvent;
 
 internal class SkillathonService : ISkillathonService
 {
@@ -21,7 +21,7 @@ internal class SkillathonService : ISkillathonService
 		_logger = logger;
 	}
 
-	public async Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null)
+	public async Task<Skillathon> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null)
 	{
 		var skillathon = await _skillathonCreator.CreateSkillathonAsync(eventName, skillName, startDate, endDate);
 		
@@ -30,7 +30,7 @@ internal class SkillathonService : ISkillathonService
 		return skillathon;
 	}
 
-	public async Task<SkillathonEvent> GetSkillathonAsync(string eventName)
+	public async Task<Skillathon> GetSkillathonAsync(string eventName)
 	{
 		var skillathon = await _skillathonDataService.GetSkillathonAsync(eventName);
 
@@ -43,7 +43,7 @@ internal class SkillathonService : ISkillathonService
 		return skillathon;
 	}
 
-	public async Task UpdateSkillathonAsync(SkillathonEvent skillathon)
+	public async Task UpdateSkillathonAsync(Skillathon skillathon)
 	{
 		await _skillathonDataService.StoreSkillathonAsync(skillathon);
 	}

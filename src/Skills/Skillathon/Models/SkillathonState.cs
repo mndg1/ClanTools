@@ -1,4 +1,4 @@
-﻿namespace Skillathon.Models;
+﻿namespace SkillathonEvent.Models;
 
 public enum SkillathonState
 {

@@ -10,8 +10,8 @@ using Skills.Extensions;
 using UserIdentification.Extensions;
 using ConsoleApp.Extensions;
 using MassTransit;
-using Skillathon;
-using Skillathon.Extensions;
+using SkillathonEvent;
+using SkillathonEvent.Extensions;
 using Shared.Extensions;
 
 var configuration = new ConfigurationBuilder()

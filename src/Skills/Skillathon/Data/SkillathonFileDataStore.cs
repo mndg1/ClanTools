@@ -1,8 +1,8 @@
 ﻿using JsonFlatFileDataStore;
 using Shared;
-using Skillathon.Models;
+using SkillathonEvent.Models;
 
-namespace Skillathon.Data;
+namespace SkillathonEvent.Data;
 
 internal class SkillathonFileDataStore : ISkillathonDataStore
 {
@@ -15,9 +15,9 @@ internal class SkillathonFileDataStore : ISkillathonDataStore
 		_dataStore = dataStores.First(dataStore => dataStore.FileName.Equals(FILE_NAME)).DataStore;
 	}
 
-	public async Task StoreSkillathonAsync(SkillathonEvent skillathon)
+	public async Task StoreSkillathonAsync(Skillathon skillathon)
 	{
-		var collection = _dataStore.GetCollection<SkillathonEvent>();
+		var collection = _dataStore.GetCollection<Skillathon>();
 
 		var existing = collection.AsQueryable().FirstOrDefault(existing => IsMatchingName(existing.EventName, skillathon.EventName));
 
@@ -31,25 +31,25 @@ internal class SkillathonFileDataStore : ISkillathonDataStore
 		}
 	}
 
-	public Task<SkillathonEvent?> GetSkillathonAsync(string eventName)
+	public Task<Skillathon?> GetSkillathonAsync(string eventName)
 	{
-		var collection = _dataStore.GetCollection<SkillathonEvent>();
+		var collection = _dataStore.GetCollection<Skillathon>();
 
 		var skillathon = collection.AsQueryable().FirstOrDefault(existing => IsMatchingName(existing.EventName, eventName));
 
 		return Task.FromResult(skillathon);
 	}
 
-	public Task<IEnumerable<SkillathonEvent>> GetSkillathonsAsync()
+	public Task<IEnumerable<Skillathon>> GetSkillathonsAsync()
 	{
-		var collection = _dataStore.GetCollection<SkillathonEvent>();
+		var collection = _dataStore.GetCollection<Skillathon>();
 
 		return Task.FromResult(collection.AsQueryable());
 	}
 
 	public async Task DeleteSkillathonAsync(string eventName)
 	{
-		var collection = _dataStore.GetCollection<SkillathonEvent>();
+		var collection = _dataStore.GetCollection<Skillathon>();
 
 		await collection.DeleteOneAsync(existing => IsMatchingName(existing.EventName, eventName));
 	}

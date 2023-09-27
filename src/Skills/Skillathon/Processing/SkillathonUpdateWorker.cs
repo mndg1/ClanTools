@@ -1,9 +1,9 @@
 ﻿using MassTransit.Initializers;
 using Microsoft.Extensions.Hosting;
-using Skillathon.Data;
-using Skillathon.Models;
+using SkillathonEvent.Data;
+using SkillathonEvent.Models;
 
-namespace Skillathon.Processing;
+namespace SkillathonEvent.Processing;
 
 internal class SkillathonUpdateWorker : BackgroundService
 {

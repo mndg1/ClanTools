@@ -1,14 +1,14 @@
-﻿using Skillathon.Models;
+﻿using SkillathonEvent.Models;
 
-namespace Skillathon;
+namespace SkillathonEvent;
 
 public interface ISkillathonService
 {
-	Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null);
+	Task<Skillathon> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null);
 
-	Task<SkillathonEvent> GetSkillathonAsync(string eventName);
+	Task<Skillathon> GetSkillathonAsync(string eventName);
 
-	Task UpdateSkillathonAsync(SkillathonEvent skillathon);
+	Task UpdateSkillathonAsync(Skillathon skillathon);
 
 	Task DeleteSkillathonAsync(string eventName);
 }

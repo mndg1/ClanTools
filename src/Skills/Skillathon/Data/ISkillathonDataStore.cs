@@ -1,14 +1,14 @@
-﻿using Skillathon.Models;
+﻿using SkillathonEvent.Models;
 
-namespace Skillathon.Data;
+namespace SkillathonEvent.Data;
 
 internal interface ISkillathonDataStore
 {
-	Task StoreSkillathonAsync(SkillathonEvent skillathon);
+	Task StoreSkillathonAsync(Skillathon skillathon);
 
-	Task<SkillathonEvent?> GetSkillathonAsync(string eventName);
+	Task<Skillathon?> GetSkillathonAsync(string eventName);
 
-	Task<IEnumerable<SkillathonEvent>> GetSkillathonsAsync();
+	Task<IEnumerable<Skillathon>> GetSkillathonsAsync();
 
 	Task DeleteSkillathonAsync(string eventName);
 }

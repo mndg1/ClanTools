@@ -36,7 +36,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserIdentification", "src\U
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserIdentification.Test", "test\UserIdentification.Test\UserIdentification.Test.csproj", "{A9D73EE9-1EF0-472A-ACAD-6FD4B6AFF53A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Skillathon", "src\Skills\Skillathon\Skillathon.csproj", "{189D016C-21E8-414A-84E8-59AF689637E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkillathonEvent", "src\Skills\Skillathon\SkillathonEvent.csproj", "{189D016C-21E8-414A-84E8-59AF689637E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Console", "Console", "{B80474F1-FC27-4927-8485-5A738F89B303}"
 EndProject

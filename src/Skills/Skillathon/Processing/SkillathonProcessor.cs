@@ -1,8 +1,8 @@
 ﻿using Shared;
-using Skillathon.Modification;
-using Skillathon.Models;
+using SkillathonEvent.Modification;
+using SkillathonEvent.Models;
 
-namespace Skillathon.Processing;
+namespace SkillathonEvent.Processing;
 
 internal class SkillathonProcessor : ISkillathonProcessor
 {
@@ -17,7 +17,7 @@ internal class SkillathonProcessor : ISkillathonProcessor
         _timeProvider = timeProvider;
     }
 
-    public async Task ProcessAsync(IEnumerable<SkillathonEvent> skillathons)
+    public async Task ProcessAsync(IEnumerable<Skillathon> skillathons)
     {
         foreach (var skillathon in skillathons)
         {
@@ -32,7 +32,7 @@ internal class SkillathonProcessor : ISkillathonProcessor
         }
     }
 
-    private bool UpdateState(SkillathonEvent skillathon)
+    private bool UpdateState(Skillathon skillathon)
     {
         var updated = false;
 
@@ -50,7 +50,7 @@ internal class SkillathonProcessor : ISkillathonProcessor
         return updated;
     }
 
-    private bool ShouldStart(SkillathonEvent skillathon)
+    private bool ShouldStart(Skillathon skillathon)
     {
         if (skillathon.State != SkillathonState.Waiting)
         {
@@ -67,7 +67,7 @@ internal class SkillathonProcessor : ISkillathonProcessor
         return skillathon.StartDate <= currentDate;
     }
 
-    private bool ShouldEnd(SkillathonEvent skillathon)
+    private bool ShouldEnd(Skillathon skillathon)
     {
         if (skillathon.EndDate is null)
         {

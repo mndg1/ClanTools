@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Skillathon.Exceptions;
+namespace SkillathonEvent.Exceptions;
 
 internal class StatusNotSupportedException : Exception
 {

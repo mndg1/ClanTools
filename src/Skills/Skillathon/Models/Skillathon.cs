@@ -1,6 +1,6 @@
-﻿namespace Skillathon.Models;
+﻿namespace SkillathonEvent.Models;
 
-public class SkillathonEvent
+public class Skillathon
 {
 	public string EventName { get; set; }
 	public string SkillName { get; set; }
@@ -13,13 +13,13 @@ public class SkillathonEvent
 
 	public IList<Participant> Participants { get; set; } = new List<Participant>();
 
-	public SkillathonEvent() 
+	public Skillathon() 
 	{
 		EventName = "EmptyEvent";
 		SkillName = "Overall";
 	}
 
-	internal SkillathonEvent(string eventName, string skillName)
+	internal Skillathon(string eventName, string skillName)
 	{
 		EventName = eventName;
 		SkillName = skillName;

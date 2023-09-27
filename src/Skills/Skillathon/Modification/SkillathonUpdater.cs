@@ -2,14 +2,14 @@
 using MessagingContracts.Skills.Skillathon;
 using Microsoft.Extensions.Logging;
 using Shared;
-using Skillathon.Data;
-using Skillathon.Models;
-using Skillathon.Publishing;
+using SkillathonEvent.Data;
+using SkillathonEvent.Models;
+using SkillathonEvent.Publishing;
 using SkillHistory;
 using Skills;
 using UserIdentification;
 
-namespace Skillathon.Modification;
+namespace SkillathonEvent.Modification;
 
 internal class SkillathonUpdater : ISkillathonUpdater, IConsumer<UpdateSkillathon>
 {

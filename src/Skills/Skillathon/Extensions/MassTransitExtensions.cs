@@ -1,7 +1,7 @@
 ﻿using MassTransit;
-using Skillathon.Modification;
+using SkillathonEvent.Modification;
 
-namespace Skillathon.Extensions;
+namespace SkillathonEvent.Extensions;
 
 public static class MassTransitExtensions
 {

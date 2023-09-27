@@ -1,8 +1,8 @@
-﻿using Skillathon.Models;
+﻿using SkillathonEvent.Models;
 
-namespace Skillathon.Processing;
+namespace SkillathonEvent.Processing;
 
 internal interface ISkillathonProcessor
 {
-    Task ProcessAsync(IEnumerable<SkillathonEvent> skillathons);
+    Task ProcessAsync(IEnumerable<Skillathon> skillathons);
 }

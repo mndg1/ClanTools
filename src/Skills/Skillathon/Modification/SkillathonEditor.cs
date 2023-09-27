@@ -1,8 +1,8 @@
 ﻿using MassTransit;
 using MessagingContracts.Skills.Skillathon;
-using Skillathon.Data;
+using SkillathonEvent.Data;
 
-namespace Skillathon.Modification;
+namespace SkillathonEvent.Modification;
 
 internal class SkillathonEditor : ISkillathonEditor, IConsumer<EditSkillathon>
 {

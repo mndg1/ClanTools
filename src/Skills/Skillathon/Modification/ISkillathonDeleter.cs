@@ -1,4 +1,4 @@
-﻿namespace Skillathon.Modification;
+﻿namespace SkillathonEvent.Modification;
 
 internal interface ISkillathonDeleter
 {

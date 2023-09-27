@@ -1,11 +1,11 @@
 ﻿using MassTransit;
 using MessagingContracts.Skills.Skillathon;
 using Microsoft.Extensions.Logging;
-using Skillathon.Data;
-using Skillathon.Models;
+using SkillathonEvent.Data;
+using SkillathonEvent.Models;
 using Skills;
 
-namespace Skillathon.Modification;
+namespace SkillathonEvent.Modification;
 
 internal class SkillathonCreator : ISkillathonCreator, IConsumer<CreateSkillathon>
 {
@@ -23,7 +23,7 @@ internal class SkillathonCreator : ISkillathonCreator, IConsumer<CreateSkillatho
 		_logger = logger;
 	}
 
-	public async Task<SkillathonEvent> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null)
+	public async Task<Skillathon> CreateSkillathonAsync(string eventName, string skillName, DateOnly? startDate = null, DateOnly? endDate = null)
 	{
 		var existingEvent = await _skillathonDataService.GetSkillathonAsync(eventName);
 		
@@ -39,7 +39,7 @@ internal class SkillathonCreator : ISkillathonCreator, IConsumer<CreateSkillatho
 			return null!;
 		}
 
-		return new SkillathonEvent()
+		return new Skillathon()
 		{
 			EventName = eventName,
 			SkillName = actualSkillName!,

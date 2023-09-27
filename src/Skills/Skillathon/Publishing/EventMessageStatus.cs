@@ -1,4 +1,4 @@
-﻿namespace Skillathon.Publishing;
+﻿namespace SkillathonEvent.Publishing;
 
 internal enum EventMessageStatus
 {

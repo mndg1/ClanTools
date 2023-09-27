@@ -1,11 +1,11 @@
 ﻿using JsonFlatFileDataStore;
 using Microsoft.Extensions.DependencyInjection;
 using Shared;
-using Skillathon.Data;
-using Skillathon.Processing;
-using Skillathon.Publishing;
+using SkillathonEvent.Data;
+using SkillathonEvent.Processing;
+using SkillathonEvent.Publishing;
 
-namespace Skillathon.Extensions;
+namespace SkillathonEvent.Extensions;
 
 public static class ServiceCollectionExtensions
 {
