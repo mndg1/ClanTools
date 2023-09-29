@@ -3,16 +3,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Application;
+using ConsoleApplication;
 using SkillHistory.Extensions;
 using Application.Extensions;
 using Skills.Extensions;
-using UserIdentification.Extensions;
-using ConsoleApp.Extensions;
-using MassTransit;
-using SkillathonEvent;
 using SkillathonEvent.Extensions;
+using UserIdentification.Extensions;
+using MassTransit;
 using Shared.Extensions;
+using ConsoleApplication.Extensions;
 
 var configuration = new ConfigurationBuilder()
 	.AddJsonFile("appsettings.json")
@@ -37,6 +36,8 @@ builder.Services.AddMassTransit(busRegistrationConfig =>
 {
 	busRegistrationConfig.AddSkillathonConsumers();
 
+	busRegistrationConfig.AddConsoleApplicationConsumers();
+
 	busRegistrationConfig.UsingInMemory((busRegistrationContext, busFactoryConfig) =>
 	{
 		busFactoryConfig.ConfigureEndpoints(busRegistrationContext);
@@ -54,15 +55,8 @@ builder.Services.AddSkillathonModule();
 
 builder.Services.AddConsoleApplicationModule();
 
+builder.Services.AddHostedService<CommandProcessorWorker>();
+
 var host = builder.Build();
-
-var appManager = host.Services.GetRequiredService<IApplicationManager>();
-await appManager.StartApplicationsAsync();
-
-var skillathonService = host.Services.GetRequiredService<ISkillathonService>();
-var skillathon = await skillathonService.CreateSkillathonAsync("test", "Fishing");
-skillathon.RegisterParticipant("TheKap27");
-skillathon.RegisterParticipant("Taifis");
-await skillathonService.UpdateSkillathonAsync(skillathon);
 
 await host.RunAsync();

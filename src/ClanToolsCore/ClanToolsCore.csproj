@@ -17,7 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Applications\Application\Application.csproj" />
-    <ProjectReference Include="..\Applications\Console\ConsoleApp\ConsoleApp.csproj" />
+    <ProjectReference Include="..\Applications\Console\ConsoleApplication\ConsoleApplication.csproj" />
+    <ProjectReference Include="..\Skills\Skillathon\SkillathonEvent.csproj" />
     <ProjectReference Include="..\Skills\SkillHistory\SkillHistory.csproj" />
     <ProjectReference Include="..\Skills\Skills\Skills.csproj" />
     <ProjectReference Include="..\UserIdentification\UserIdentification.csproj" />

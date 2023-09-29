@@ -9,7 +9,7 @@ public class Skillathon
 	public DateOnly? EndDate { get; set; }
 	public DateTime? LastUpdateTime { get; set; }
 
-	public SkillathonState State { get; internal set; }
+	public SkillathonState State { get; set; }
 
 	public IList<Participant> Participants { get; set; } = new List<Participant>();
 

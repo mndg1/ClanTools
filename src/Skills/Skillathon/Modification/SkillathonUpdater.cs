@@ -75,6 +75,8 @@ internal class SkillathonUpdater : ISkillathonUpdater, IConsumer<UpdateSkillatho
         skillathon.LastUpdateTime = _timeProvider.UtcNow;
 
         await _skillathonPublisher.PublishSkillathonEventAsync(skillathon, EventMessageStatus.Updated);
+        
+        await _skillathonDataService.StoreSkillathonAsync(skillathon);
 	}
 
 	public async Task Consume(ConsumeContext<UpdateSkillathon> context)
